@@ -1,0 +1,55 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.0
+  kubernetes: circleci/kubernetes@1.0.2
+jobs:
+  build:
+    docker:
+      - image: cimg/node:17.3.0
+    # working_directory: ./
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run:
+          name: install dependencies
+          command: |   
+            sudo npm install
+      - run:
+          name: build app
+          command: |
+            sudo npm run build
+      - run:
+          name: Install hadolint
+          command: |
+            sudo make install-hadolint          
+      # run lints!
+      - run:
+          name: run lint
+          command: |
+            make lint
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t capstone-cloud-devops .            
+      - run:
+          name: Setup tag and push it
+          command: |
+            docker image tag capstone-cloud-devops sammybloom/capstone-cloud-devops:latest
+
+            docker image push sammybloom/capstone-cloud-devops:latest
+
+workflows:
+  default:
+    jobs:
+      - node/test:
+          matrix:
+            parameters:
+              version:
+                - alpine
+                - 17.3.0           
+      - build:
+          requires:
+            - node/test
