@@ -43,13 +43,5 @@ jobs:
 
 workflows:
   default:
-    jobs:
-      - node/test:
-          matrix:
-            parameters:
-              version:
-                - alpine
-                - 17.3.0           
-      - build:
-          requires:
-            - node/test
+    jobs:          
+      - build
