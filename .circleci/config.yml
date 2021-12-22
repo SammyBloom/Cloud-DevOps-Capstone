@@ -3,11 +3,34 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
   kubernetes: circleci/kubernetes@1.0.2
+
+commands:
+  destroy-cluster:
+    description: Destroy EKS Cluster.
+    parameters:
+        cluster-name:
+          description: |
+            Name of the EKS cluster
+          type: string
+
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name eksctl-capstone-cloud-devops --region us-east-1
+            aws cloudformation delete-stack --stack-name eksctl-<< parameters.cluster-name >>-cluster --region us-east-1
+parameters:
+  docker_image:
+    type: string
+    default: cimg/node:17.3.0  
 jobs:
   build:
     docker:
       - image: cimg/node:17.3.0
-    # working_directory: ./
+
+    working_directory: ./
+    
     steps:
       - checkout
       - setup_remote_docker:
