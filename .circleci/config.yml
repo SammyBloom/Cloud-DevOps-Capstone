@@ -142,11 +142,9 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: deployments/nginx-deployment.yaml
-          namespace: capstone
           resource-name: deployments/capstone
       - kubernetes/create-or-update-resource:
-          resource-file-path: deployments/app-service.yaml 
-          namespace: capstone       
+          resource-file-path: deployments/app-service.yaml        
      
 workflows:
   default:
