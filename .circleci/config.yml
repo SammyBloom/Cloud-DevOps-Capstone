@@ -143,59 +143,8 @@ jobs:
           resource-file-path: deployments/nginx-deployment.yaml
           resource-name: deployments/capstone
       - kubernetes/create-or-update-resource:
-          resource-file-path: deployments/app-service.yaml
-
-  undeploy-application:
-    executor: aws-eks/python3
-    parameters:
-      cluster-name:
-        description: |
-          Name of the EKS cluster
-        type: string
-      aws-region:
-        description: |
-          AWS region
-        type: string
-        default: ""
-    steps:
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: << parameters.cluster-name >>
-          install-kubectl: true
-          aws-region: << parameters.aws-region >>
-      - kubernetes/delete-resource:
-          resource-types: "deployment,service"
-          label-selector: "app=capstone"
-          wait: true
-      - run:
-          name: Check on pod status
-          command: |
-            kubectl get pods
-  delete-cluster:
-    executor: aws-eks/python3
-    steps:
-      - run:
-          name: Install the eksctl tool
-          command: |
-            if which eksctl > /dev/null; then
-              echo "eksctl is already installed"
-              exit 0
-            fi
-            mkdir -p eksctl_download
-            curl --silent --location --retry 5 "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" \
-              | tar xz -C eksctl_download
-            chmod +x eksctl_download/eksctl
-            SUDO=""
-            if [ $(id -u) -ne 0 ] && which sudo > /dev/null ; then
-              SUDO="sudo"
-            fi
-            $SUDO mv eksctl_download/eksctl /usr/local/bin/
-            rmdir eksctl_download
-      - aws-eks/delete-cluster:
-          cluster-name: capstone
-          aws-region: $AWS_DEFAULT_REGION
-          wait: true          
+          resource-file-path: deployments/app-service.yaml        
      
-
 workflows:
   default:
     jobs:          
