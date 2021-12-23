@@ -139,12 +139,12 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
-      - kubernetes/create-or-update-resource:
-          get-rollout-status: true
-          resource-file-path: deployments/nginx-deployment.yaml
-          resource-name: deployments/capstone
-      - kubernetes/create-or-update-resource:
-          resource-file-path: deployments/app-service.yaml        
+      # - kubernetes/create-or-update-resource:
+      #     get-rollout-status: true
+      #     resource-file-path: deployments/nginx-deployment.yaml
+      #     resource-name: deployments/capstone
+      # - kubernetes/create-or-update-resource:
+      #     resource-file-path: deployments/app-service.yaml        
      
 workflows:
   default:
