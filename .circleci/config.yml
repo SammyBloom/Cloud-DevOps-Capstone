@@ -70,7 +70,7 @@ jobs:
          - checkout
          - run: |
             docker build -t sammybloom/flask-app:latest .
-            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKER_USER --password-
+            echo $DOCKERHUB_PASSWORD | docker login -u $DOCKER_USER --password-blessme12
             docker push sammybloom/flask-app:latest
   # Creation of Cluster
   create-cluster:
