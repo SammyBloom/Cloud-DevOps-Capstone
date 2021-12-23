@@ -5,8 +5,7 @@ setup:
 	python3 -m venv ./.devops
 
 install:
-	# This should be run fr
-	
+	# This should be run 
 	pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
