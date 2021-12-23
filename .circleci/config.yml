@@ -19,8 +19,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name eksctl-capstone-cloud-devops --region us-east-1
-            aws cloudformation delete-stack --stack-name eksctl-<< parameters.cluster-name >>-cluster --region us-east-1
+            aws cloudformation delete-stack --stack-name eksctl-capstone-cloud-devops --region us-west-2
+            aws cloudformation delete-stack --stack-name eksctl-<< parameters.cluster-name >>-cluster --region us-west-2
 parameters:
   docker_image:
     type: string
@@ -105,7 +105,7 @@ jobs:
           cluster-name: capstone
           node-type: t3.medium
      
-     
+
    # Test the Cluster
   test-cluster:
     executor: aws-eks/python3
