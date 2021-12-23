@@ -19,7 +19,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name eksctl-testa-nodegroup-devops --region us-west-2
+            aws cloudformation delete-stack --stack-name eksctl-capstone-nodegroup-devops --region us-west-2
             aws cloudformation delete-stack --stack-name eksctl-<< parameters.cluster-name >>-cluster --region us-west-2
 parameters:
   docker_image:
@@ -79,7 +79,7 @@ jobs:
         description: |
           Name of the EKS cluster
         type: string
-        default: testa
+        default: capstone
     steps:
       - run:
           name: Install the eksctl tool
@@ -101,7 +101,7 @@ jobs:
       - aws-eks/install-aws-iam-authenticator:
           release-tag: ''
       - aws-eks/create-cluster:
-          cluster-name: testa
+          cluster-name: capstone
           node-type: t3.medium
      
 
@@ -142,9 +142,11 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: true
           resource-file-path: deployments/nginx-deployment.yaml
-          resource-name: deployments/testa
+          resource-name: deployments/capstone
+          namespace: ""
       - kubernetes/create-or-update-resource:
-          resource-file-path: deployments/app-service.yaml        
+          resource-file-path: deployments/app-service.yaml
+          namespace: ""        
      
 workflows:
   default:
@@ -154,10 +156,10 @@ workflows:
           requires:
             - build
       - test-cluster:
-          cluster-name: testa
+          cluster-name: capstone
           requires:
             - create-cluster
       - create-deployment:
-          cluster-name: testa
+          cluster-name: capstone
           requires:
             - test-cluster
