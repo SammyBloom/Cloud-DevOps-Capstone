@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstone
+  name: testa
   labels:
-    app: capstone
+    app: testa
 
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: capstone
+      app: testa
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,11 +21,11 @@ spec:
   template:
     metadata:
       labels:
-        app: capstone
+        app: testa
     spec:
       containers:
         - image: sammybloom/flask-app:latest
           imagePullPolicy: Always
-          name: capstone
+          name: testa
           ports:
             - containerPort: 80

@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: capstone
+  name: testa
 
 spec:
   type: LoadBalancer
   selector:
-    app: capstone
+    app: testa
   ports:
     - port: 80
       targetPort: 80

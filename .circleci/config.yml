@@ -19,7 +19,7 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name eksctl-capstone-nodegroup-devops --region us-west-2
+            aws cloudformation delete-stack --stack-name eksctl-testa-nodegroup-devops --region us-west-2
             aws cloudformation delete-stack --stack-name eksctl-<< parameters.cluster-name >>-cluster --region us-west-2
 parameters:
   docker_image:
@@ -79,7 +79,7 @@ jobs:
         description: |
           Name of the EKS cluster
         type: string
-        default: capstone
+        default: testa
     steps:
       - run:
           name: Install the eksctl tool
@@ -101,7 +101,7 @@ jobs:
       - aws-eks/install-aws-iam-authenticator:
           release-tag: ''
       - aws-eks/create-cluster:
-          cluster-name: capstone
+          cluster-name: testa
           node-type: t3.medium
      
 
@@ -139,12 +139,12 @@ jobs:
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
-      # - kubernetes/create-or-update-resource:
-      #     get-rollout-status: true
-      #     resource-file-path: deployments/nginx-deployment.yaml
-      #     resource-name: deployments/capstone
-      # - kubernetes/create-or-update-resource:
-      #     resource-file-path: deployments/app-service.yaml        
+      - kubernetes/create-or-update-resource:
+          get-rollout-status: true
+          resource-file-path: deployments/nginx-deployment.yaml
+          resource-name: deployments/testa
+      - kubernetes/create-or-update-resource:
+          resource-file-path: deployments/app-service.yaml        
      
 workflows:
   default:
@@ -154,10 +154,10 @@ workflows:
           requires:
             - build
       - test-cluster:
-          cluster-name: capstone
+          cluster-name: testa
           requires:
             - create-cluster
       - create-deployment:
-          cluster-name: capstone
+          cluster-name: testa
           requires:
             - test-cluster
