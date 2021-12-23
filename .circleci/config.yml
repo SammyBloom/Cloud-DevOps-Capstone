@@ -105,7 +105,6 @@ jobs:
           cluster-name: capstone
           node-type: t3.medium
      
-     
    # Test the Cluster
   test-cluster:
     executor: aws-eks/python3
